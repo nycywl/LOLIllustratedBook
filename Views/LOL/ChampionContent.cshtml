@@ -1,12 +1,13 @@
 ﻿@using LOLIllustratedBook.ViewModels
-@model ChampionData
+@model ChampionData// 指定這個視圖的模型類型為 ChampionData，這樣可以在視圖中直接使用 Model 來存取 ChampionData 的屬性。
+
 @{
-    ViewModel Champion = ViewBag.Champion;
-    ViewData["Title"] = $"{ViewData["ProjectName"]}英雄介紹 - {Model.DTO_Champion.Name}";
-    string heroID = $"https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{Model.DTO_Champion.Id}_";
+    ViewModel Champion = ViewBag.Champion; // 從 ViewBag 取得 Champion 的 ViewModel 資料。
+    ViewData["Title"] = $"{ViewData["ProjectName"]}英雄介紹 - {Model.DTO_Champion.Name}";// 設置頁面標題，包含專案名稱和英雄名稱。
+    string heroID = $"https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{Model.DTO_Champion.Id}_";// 設定英雄圖片的 URL 前綴。
 }
 <div class="page-body">
-    <a href="@Url.Action("Menu","LoL")" style="margin:0.5em">回到首頁</a>
+    <a href="@Url.Action("Menu","LoL")" style="margin:0.5em">回到首頁</a> 
     <div class="container-fluid">
         <div>
             <div class="row product-page-main p-0">
@@ -21,12 +22,13 @@
                                                 @data
                                                 ;
                                                 <span> </span>
-                                            }</h4>
+                                            }
+                                        </h4> 
                                         <div class="slick-list draggable">
                                             <div class="slick-track">
                                                 <div class="slide-box slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="0" style="width: 100%; position: relative; left: 0px; top: 0px;">
 
-                                                    <img class="img-fluid" id="bgimg" src="" alt="Azir Splash Art" style="width:100%; height:auto;">
+                                                    <img class="img-fluid" id="bgimg" src="" alt="Azir Splash Art" style="width:100%; height:auto;"> 
                                                 </div>
                                             </div>
                                         </div>
@@ -35,7 +37,7 @@
                             </div>
 
                             <div class="row" style="margin-top:2em">
-                                <canvas id="radarChart" style="max-width:400px;max-height:400px"></canvas>
+                                <canvas id="radarChart" style="max-width:400px;max-height:400px"></canvas> 
                             </div>
                         </div>
                     </div>
@@ -45,15 +47,15 @@
                         <div class="card-body">
                             <div class="pro-group pt-0">
                                 <div class="product-page-details">
-                                    <h3>新手建議</h3>
+                                    <h3>新手建議</h3> 
                                 </div>
                             </div>
                             <div class="pro-group">
-                                <a href="@ViewData["LoveActionURL"]" style="margin:0.5em">@ViewData["LoveAction"]</a>
+                                <a href="@ViewData["LoveActionURL"]" style="margin:0.5em">@ViewData["LoveAction"]</a> 
                             </div>
                             <div class="pro-group pt-0">
                                 <div class="product-page-details">
-                                    <h3>技能列表</h3>
+                                    <h3>技能列表</h3> 
                                 </div>
                             </div>
                             <div class="pro-group">
@@ -174,52 +176,52 @@
     </div>
 </div>
 <script>
-    let i = 0;
+    let i = 0; // 顯示英雄的攻擊速度。
 
     async function updateImage() {
-        const imgElement = document.getElementById('bgimg');
-        const url = `@heroID${i}.jpg`;
+        const imgElement = document.getElementById('bgimg'); // 獲取顯示英雄圖片的 img 元素。
+        const url = `@heroID${i}.jpg`; // 設定圖片 URL。
 
         try {
-            const response = await fetch(url, { method: 'HEAD' });
+            const response = await fetch(url, { method: 'HEAD' }); // 使用 fetch 請求圖片的 HEAD 來檢查圖片是否存在。
             if (response.ok) {
-                imgElement.src = url;
-                i++;
+                imgElement.src = url; // 如果圖片存在，設定 img 元素的 src 屬性。
+                i++;// 計數器加一。
             } else {
-                i = 0;
+                i = 0;// 如果圖片不存在，將計數器重置為零。
             }
         } catch (error) {
-            console.error('Error fetching image:', error);
-            i = 0;
+            console.error('Error fetching image:', error); // 捕捉錯誤並在控制台打印錯誤信息。
+            i = 0;// 在出錯時將計數器重置為零。
         }
     }
 
-    setInterval(updateImage, 1000);
-    updateImage();
+    setInterval(updateImage, 1000);// 每秒調用一次 updateImage 函數。
+    updateImage();// 初次調用 updateImage 函數。
 </script>
 <script>
-    const ctx = document.getElementById('radarChart').getContext('2d');
+    const ctx = document.getElementById('radarChart').getContext('2d'); // 獲取顯示雷達圖的 canvas 元素的 2D 繪圖上下文。
     const data = {
-        labels: ['Attack', 'Defense', 'Magic', 'Difficulty'],
+        labels: ['Attack', 'Defense', 'Magic', 'Difficulty'],  // 雷達圖的標籤。
         datasets: [{
             label: 'Info',
-            data: [@Model.DTO_Info.Attack, @Model.DTO_Info.Defense, @Model.DTO_Info.Magic, @Model.DTO_Info.Difficulty],
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
+            data: [@Model.DTO_Info.Attack, @Model.DTO_Info.Defense, @Model.DTO_Info.Magic, @Model.DTO_Info.Difficulty], // 英雄的各屬性數據。
+            backgroundColor: 'rgba(255, 99, 132, 0.2)', // 數據集的背景色。
+            borderColor: 'rgba(255, 99, 132, 1)', // 數據集的邊框色。
+            borderWidth: 1 // 邊框寬度。
         }]
     };
 
     const config = {
-        type: 'radar',
-        data: data,
+        type: 'radar', // 設定圖表類型為雷達圖。
+        data: data, // 設定圖表數據。
         options: {
             scales: {
                 r: {
-                    beginAtZero: true
+                    beginAtZero: true // 設定雷達圖從零開始。
                 }
             }
         }
     };
-    const radarChart = new Chart(ctx, config);
+    const radarChart = new Chart(ctx, config); // 創建雷達圖表。
 </script>
